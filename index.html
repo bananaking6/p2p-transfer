@@ -49,7 +49,7 @@
                 </label>
                 <input id="fileInput" type="file" multiple class="hidden" onchange="sendFiles(this.files)">
             </div>
-            <form id="message-form" class="flex gap-2" onsubmit="sendMessage(event);return false;">
+            <form id="message-form" class="flex gap-2" onsubmit="sendMessage(event);return false;" autocomplete="off">
                 <input id="message-input" type="text" placeholder="Type a message..." class="flex-grow bg-[--input] border border-[--border] rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[--ring] text-white">
                 <button type="submit" class="bg-[--primary] hover:bg-[--primary-hover] text-white font-bold p-3 rounded-lg transition-colors flex items-center justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.428A1 1 0 009.894 15V5.111L10.894 2.553z" /></svg>

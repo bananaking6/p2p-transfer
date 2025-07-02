@@ -39,7 +39,7 @@ function copyPeerId() {
 
 function connectToPeer() {
     const peerId = document.querySelector('#connectToPeerID').value;
-    if (!peerId || peerId === num) {
+    if (!peerId || peerId === num || peerId.length < 5) {
         alert('Please enter a valid Peer ID to connect to.');
         return;
     }
@@ -48,7 +48,7 @@ function connectToPeer() {
     const fullPeerId = 'p2pfiles_' + peerId;
     
     conn = peer.connect(fullPeerId);
-    
+
     conn.on('open', () => {
         onConnected();
     });
@@ -76,19 +76,29 @@ function onConnected() {
 
     // Set up data listener
     conn.on('data', (data) => {
-        if (data.type === 'file') {
-            // This logic seems incomplete, assuming it will be built out
-            const file = data.file;
-            const url = URL.createObjectURL(new Blob([file.data], { type: file.type }));
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = file.name;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+        switch (data.type) {
+            case 'file':
+                // This logic seems incomplete, assuming it will be built out
+                const file = data.file;
+                const url = URL.createObjectURL(new Blob([file.data], { type: file.type }));
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = file.name;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                break;
+            case 'message':
+                const message = data.text;
+                const chatBox = document.querySelector('#messages');
+                const messageElement = document.createElement('div');
+                messageElement.className = 'message';
+                messageElement.textContent = message;
+                chatBox.appendChild(messageElement);
+                chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
+                break;
         }
-        // Add logic for other data types like messages here
     });
 
     conn.on('close', () => {
@@ -97,5 +107,34 @@ function onConnected() {
     });
 }
 
-function sendFiles(files) {}
-function sendMessage() {}
+function sendFiles(files) {
+    for (const file of files) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            conn.send({ type: 'file', file: { name: file.name, data: event.target.result, type: file.type } });
+        };
+        reader.readAsArrayBuffer(file);
+    }
+}
+function sendMessage() {
+    const message = document.querySelector('#message-input').value;
+    if (message.trim() === '') {
+        return;
+    }
+
+    const chatBox = document.querySelector('#messages');
+    const messageElement = document.createElement('div');
+    messageElement.className = 'message';
+    messageElement.innerHTML = '<b>You:</b> ' + message.replace(/</g, '&lt;').replace(/>/g, '&gt;'); // Escape HTML to prevent XSS
+    chatBox.appendChild(messageElement);
+    chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
+    
+    conn.send({ type: 'message', text: message });
+    document.querySelector('#message-input').value = '';
+}
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    deferredPrompt.prompt();
+});
