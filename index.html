@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>P2P Transfer</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+        <link rel="stylesheet" href="style.css">
+        <link rel="icon" href="favicon.svg">
+    </head>
+    <body class="bg-slate-900 text-slate-50">
+        <div id="container" class="min-h-screen flex flex-col items-center justify-center p-4 space-y-6">
+            <div id="qrCode" class="p-2 bg-white rounded-lg shadow-lg w-full max-w-xs"></div>
+            <div id="peerID" class="text-center">
+                <h1 class="text-lg font-medium text-slate-300">Your Session ID:</h1>
+                <p id="peerIDValue" class="text-2xl font-bold text-primary tracking-widest"></p>
+            </div>
+            <form onsubmit="connectToPeer(); return false;" autocomplete="off" class="w-full max-w-xs">
+                <input autofocus id="connectToPeerID" type="text" placeholder="Enter Peer ID" oninput="this.value = this.value.toUpperCase().replace(/[^0-9]/ig, '')" maxlength="5" class="w-full px-4 py-3 bg-input border border-border rounded-lg text-center text-xl tracking-widest placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all duration-200">
+            </form>
+        </div>
+    </body>
+    <script src="https://cdn.jsdelivr.net/npm/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
+    <script src="js/peer.js"></script>
+    <script src="script.js"></script>
+</html>

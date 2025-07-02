@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>P2P Files</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <link rel="icon" type="image/png" href="favicon.svg">
+        <link rel="stylesheet" href="lib/notyf.css">
+    </head>
+    <body>
+        <div id="container">
+            <div id="peerID">
+                <h1>Session ID: <span id="peerIDValue"></span></h1>
+            </div>
+            <form onsubmit="connectToPeer(); return false;" autocomplete="off">
+                <input id="connectToPeerID" type="text" placeholder="Enter Session ID" oninput="this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/ig, '')" maxlength="5">
+            </form>
+        </div>
+    </body>
+    <script src="lib/peer.js"></script>
+    <script src="lib/ponyfill.js"></script>
+    <script src="lib/notyf.js"></script>
+    <script src="script.js"></script>
+</html>
