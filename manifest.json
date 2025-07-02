@@ -3,21 +3,21 @@
   "name": "P2P Transfer",
   "icons": [
     {
-      "src": "/assets/192.png",
+      "src": "./favicon.svg",
+      "sizes": "16x16"
+    },
+    {
+      "src": "./assets/192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/assets/512.png",
+      "src": "./assets/512.png",
       "sizes": "512x512",
       "type": "image/png"
     },
     {
-      "src": "/favicon.svg",
-      "sizes": "513x513"
-    },
-    {
-      "src": "/assets/maskable.png",
+      "src": "./assets/maskable.png",
       "sizes": "1024x1024",
       "type": "image/png",
       "purpose": "maskable"
@@ -25,16 +25,18 @@
   ],
   "screenshots": [
     {
-      "src": "/assets/desktop.png",
+      "src": "./assets/desktop.png",
       "sizes": "2560x1307",
       "form-factor": "wide",
-      "label": "Desktop View"
+      "label": "Desktop View",
+      "type": "image/png"
     },
     {
-      "src": "/assets/mobile.png",
+      "src": "./assets/mobile.png",
       "sizes": "540x1200",
       "form-factor": "mobile",
-      "label": "Mobile View"
+      "label": "Mobile View",
+      "type": "image/png"
     }
   ],
   "start_url": ".",
