@@ -11,6 +11,16 @@
       "src": "/assets/512.png",
       "sizes": "512x512",
       "type": "image/png"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "513x513"
+    },
+    {
+      "src": "/assets/maskable.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
   "screenshots": [
@@ -29,6 +39,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#e0e7ff",
+  "theme_color": "#0d0c22",
   "background_color": "#0d0c22"
 }
