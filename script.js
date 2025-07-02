@@ -2,12 +2,13 @@
 let numValues = '123456789'.split('');
 let num = Array.from({ length: 5 }, () => numValues[Math.floor(Math.random() * numValues.length)]).join('');
 let peer = new Peer('p2pfiles_' + num);
+let conn;
 
 const qrCode = new QRCodeStyling({
         width: 300,
         height: 300,
         type: "svg",
-        data: "" + peer.id,
+        data: "https://projects.skibidi.is-a.dev/files/?id=" + peer.id,
         image: "favicon.svg",
         dotsOptions: {
             color: "goldenrod",
@@ -21,3 +22,80 @@ const qrCode = new QRCodeStyling({
 
 qrCode.append(document.getElementById("qrCode"));
 document.querySelector('#peerIDValue').innerText = num.toUpperCase();
+
+function copyPeerId() {
+    const peerId = document.querySelector('#peerIDValue').innerText;
+    navigator.clipboard.writeText(peerId).then(() => {
+        document.querySelector('#peerIDCopy').innerText = 'Copied!';
+        setTimeout(() => {
+            document.querySelector('#peerIDCopy').innerText = 'COPY';
+        }, 1000);
+        //toast.success('Copied ID: ' + peerId);
+    }, (err) => {
+        //toast.error('Failed to copy ID');
+        console.error('Could not copy text: ', err);
+    });
+}
+
+function connectToPeer() {
+    const peerId = document.querySelector('#connectToPeerID').value;
+    if (!peerId || peerId === num) {
+        alert('Please enter a valid Peer ID to connect to.');
+        return;
+    }
+    
+    // Add the prefix to the user-entered ID
+    const fullPeerId = 'p2pfiles_' + peerId;
+    
+    conn = peer.connect(fullPeerId);
+    
+    conn.on('open', () => {
+        onConnected();
+    });
+
+    conn.on('error', (err) => {
+        console.error('Connection failed: ', err);
+        alert('Connection failed. Please check the Peer ID and try again.');
+    });
+}
+
+peer.on('connection', (connection) => {
+    conn = connection;
+    conn.on('open', () => {
+        onConnected();
+    });
+});
+
+// A unified function to handle the post-connection state
+function onConnected() {
+    console.log('Connected to ' + conn.peer);
+    
+    // Hide the connection screen and show the transfer screen
+    document.querySelector('#connection-screen').classList.add('hidden');
+    document.querySelector('#chat-screen').classList.remove('hidden');
+
+    // Set up data listener
+    conn.on('data', (data) => {
+        if (data.type === 'file') {
+            // This logic seems incomplete, assuming it will be built out
+            const file = data.file;
+            const url = URL.createObjectURL(new Blob([file.data], { type: file.type }));
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = file.name;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        // Add logic for other data types like messages here
+    });
+
+    conn.on('close', () => {
+        alert('Connection closed.');
+        location.reload();
+    });
+}
+
+function sendFiles(files) {}
+function sendMessage() {}
