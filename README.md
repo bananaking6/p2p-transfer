@@ -1,4 +1,4 @@
-# P2P Warp 🚀
+# P2P Transfer 🚀
 
 A modern, secure peer-to-peer file transfer and messaging application that works directly in your browser without any servers.
 
