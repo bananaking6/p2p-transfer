@@ -8,7 +8,7 @@ const qrCode = new QRCodeStyling({
         width: 300,
         height: 300,
         type: "svg",
-        data: "https://projects.skibidi.is-a.dev/files/?id=" + peer.id,
+        data: "https://projects.skibidi.is-a.dev/transfer/?id=" + peer.id,
         image: "favicon.svg",
         dotsOptions: {
             color: "goldenrod",
@@ -37,8 +37,7 @@ function copyPeerId() {
     });
 }
 
-function connectToPeer() {
-    const peerId = document.querySelector('#connectToPeerID').value;
+function connectToPeer(peerId = document.querySelector('#connectToPeerID').value) {
     if (!peerId || peerId === num || peerId.length < 5) {
         alert('Please enter a valid Peer ID to connect to.');
         return;
@@ -137,4 +136,18 @@ window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
     deferredPrompt.prompt();
+});
+
+window.addEventListener('load', () => {
+    searchParams = new URLSearchParams(window.location.search);
+    if (searchParams.has('id')) {
+        const peerId = searchParams.get('id');
+        document.querySelector('#connection-screen').innerHTML = `<h2>Connecting to Peer ID: ${peerId}</h2>`;
+        setTimeout(() => connectToPeer(peerId), 1000);
+        setTimeout(() => {
+            if (!conn || !conn.open) {
+                document.querySelector('#connection-screen').innerHTML = `<h2>This seems to be taking a while, please check your connection.</h2>`;
+            }
+        }, 5000);
+    }
 });
