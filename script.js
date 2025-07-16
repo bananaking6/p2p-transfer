@@ -8,7 +8,7 @@ const qrCode = new QRCodeStyling({
         width: 300,
         height: 300,
         type: "svg",
-        data: "https://projects.skibidi.is-a.dev/transfer/?id=" + peer.id,
+        data: "https://projects.skibidi.is-a.dev/transfer/?id=" + num,
         image: "favicon.svg",
         dotsOptions: {
             color: "goldenrod",
